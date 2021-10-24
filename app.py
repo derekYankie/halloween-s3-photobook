@@ -9,20 +9,20 @@ boto3.setup_default_session(profile_name='default')
 s3 = boto3.resource('s3')
 
 
-#create app
+#Create app
 app = Flask(__name__)
 Bootstrap(app)
-#register jinja filters
+#Register jinja filters
 app.jinja_env.filters['datetimeformat'] = datetimeformat
 app.jinja_env.filters['file_type'] = file_type
 
-#make index page
+#Route index page
 @app.route('/')
 def index():
     print("Dude, you're webpage is running!")
     return render_template('index.html')
 
-#list files in flask-s3-photobook bucket
+#Route Halloween files page.
 @app.route('/files')
 def files():
  
