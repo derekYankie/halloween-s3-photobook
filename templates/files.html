@@ -18,23 +18,30 @@
               <p>Created: {{ my_bucket.creation_date | datetimeformat }}</p>
               <hr>
           </div>
+          <!--File upload form-->
+          <form class="upload-form" action="/upload" method="post" enctype="multipart/form-data">
+            <!--Choose file to upload-->
+        <p><input type="file" name="file"></p>
+        <button type="submit" name="submit" class="btn btn-primary">Upload</button>
+        </form>
+        <hr>
 
-          <!--Table for displaying Bucket files-->
-          <table class="table table-striped">
-            <tr>
-                <th>Filename</th>
-                <th>Last Modified</th>
-                <th>Type</th>
-            </tr>
-                {% for f in files %}
-            <tr>
-                <td>{{ f.key }}</td>
-                <td>{{ f.last_modified | datetimeformat }}</td>
-                <td>{{ f.key | file_type }}</td>
-            </tr>
-            {% endfor %}
-        </table>
-        <!--End of table-->
-        </div>
+
     </div>
+    <table class="table table-striped">
+        <tr>
+            <th>Filename</th>
+            <th>Last Modified</th>
+            <th>Type</th>
+        </tr>
+            {% for f in files %}
+        <tr>
+            <td>{{ f.key }}</td>
+            <td>{{ f.last_modified | datetimeformat }}</td>
+            <td>{{ f.key | file_type }}</td>
+        </tr>
+        {% endfor %}
+    </table>
+</div>
+</div>
 {% endblock %}

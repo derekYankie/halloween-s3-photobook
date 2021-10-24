@@ -35,6 +35,19 @@ def files():
 
     return render_template('files.html', my_bucket=my_bucket, files=summaries)
 
+#Route uploaded files 
+@app.route('/upload', methods=['POST'])
+def upload():
+    file = request.files['file']
+
+    s3_resource = boto3.resource('s3')
+    my_bucket = s3.Bucket('halloween-s3-photobook-2021')
+    #put uploaded file into bucket
+    my_bucket.Object(file.filename).put(Body=file)
+    print('Uploaded file:', file.filename)
+
+    return redirect(url_for('files'))
+
 
 if __name__ == '__main__':
     app.run()
