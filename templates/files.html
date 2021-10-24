@@ -1,0 +1,40 @@
+{% extends "bootstrap/base.html" %}
+{% block html_attribs %} lang='en' {% endblock %}
+{% block title %}Halloween Photobook List{% endblock %}
+
+{% block navbar %}
+<!-- The nav bar lives here -->
+<div class="navbar navbar-fixed-top">
+</div>
+{% endblock %}
+
+{% block content %}
+<!-- The body of the webpage lives here -->
+  <div class="container">
+      <div class="row">
+          <div class="col-12-xs">
+              <!-- Website header -->
+              <h3>Halloween Photo Bucket 2021 Info</h3>
+              <p>Created: {{ my_bucket.creation_date | datetimeformat }}</p>
+              <hr>
+          </div>
+
+          <!--Table for displaying Bucket files-->
+          <table class="table table-striped">
+            <tr>
+                <th>Filename</th>
+                <th>Last Modified</th>
+                <th>Type</th>
+            </tr>
+                {% for f in files %}
+            <tr>
+                <td>{{ f.key }}</td>
+                <td>{{ f.last_modified | datetimeformat }}</td>
+                <td>{{ f.key | file_type }}</td>
+            </tr>
+            {% endfor %}
+        </table>
+        <!--End of table-->
+        </div>
+    </div>
+{% endblock %}
