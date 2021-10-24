@@ -22,7 +22,7 @@ def index():
     print("Dude, you're webpage is running!")
     return render_template('index.html')
 
-#Route Halloween files page.
+#Route Halloween files page
 @app.route('/files')
 def files():
  
