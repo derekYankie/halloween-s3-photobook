@@ -14,8 +14,20 @@
       <div class="row">
           <div class="col-12-xs">
               <!-- Website header -->
-              <h3>Halloween Photo Bucket 2021 Info</h3>
+              <h3>Halloween Photo Bucket 2021</h3>
               <p>Created: {{ my_bucket.creation_date | datetimeformat }}</p>
+
+              <!--Alert user that their photo has been uploaded.-->
+              {% with messages = get_flashed_messages() %}
+                {% if messages %}
+                <p class="bg-info" style="padding:15px;">
+                {% for message in messages %}
+                    {{ message }}<br>
+                {% endfor %}
+                </p>
+              {% endif %}
+            {% endwith %}
+
               <hr>
           </div>
           <!--File upload form-->

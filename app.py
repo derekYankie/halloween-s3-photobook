@@ -1,4 +1,5 @@
 from flask import Flask, render_template, request, redirect, url_for
+from flask.helpers import flash
 from flask_bootstrap import Bootstrap
 import boto3
 from filters import datetimeformat, file_type
@@ -12,6 +13,7 @@ s3 = boto3.resource('s3')
 #Create app
 app = Flask(__name__)
 Bootstrap(app)
+app.secret_key= 'this_is_a_secret'
 #Register jinja filters
 app.jinja_env.filters['datetimeformat'] = datetimeformat
 app.jinja_env.filters['file_type'] = file_type
@@ -46,6 +48,7 @@ def upload():
     my_bucket.Object(file.filename).put(Body=file)
     print('Uploaded file:', file.filename)
 
+    flash('File uploaded successfully')
     return redirect(url_for('files'))
 
 
