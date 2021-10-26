@@ -4,8 +4,8 @@ from flask_bootstrap import Bootstrap
 import boto3
 from filters import datetimeformat, file_type
 
-#Use boto3 to access s3 resource
-#I'm having boto3 use my aws cli creds insted of storing it in an enviorment variable file
+#* Use boto3 to access s3 resource
+#I'm having boto3 use my aws cli creds insted of storing it in an environment variable file
 boto3.setup_default_session(profile_name='default')
 s3 = boto3.resource('s3')
 
@@ -27,7 +27,6 @@ def index():
 #Route Halloween files page
 @app.route('/files')
 def files():
- 
     my_bucket = s3.Bucket('halloween-s3-photobook-2021')
     #print all items in s3 Bucket
     for file in my_bucket.objects.all():
@@ -49,6 +48,19 @@ def upload():
     print('Uploaded file:', file.filename)
 
     flash('File uploaded successfully')
+    return redirect(url_for('files'))
+
+#Route deleted files 
+@app.route('/delete', methods=['POST'])
+def delete():
+    key = request.form['key']
+
+    s3_resource = boto3.resource('s3')
+    my_bucket = s3.Bucket('halloween-s3-photobook-2021')
+    my_bucket.Object(key).delete()
+
+    flash('File deleted successfully')
+
     return redirect(url_for('files'))
 
 

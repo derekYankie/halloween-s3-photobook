@@ -1,5 +1,9 @@
 {% extends "bootstrap/base.html" %}
 {% block html_attribs %} lang='en' {% endblock %}
+{% block head %}
+    {{super()}}
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.13.0/css/all.css"integrity="sha384-Bfad6CLCknfcloXFOyFnlgtENryhrpZCe29RTifKEixXQZ38WheV+i/6YWSzkz3V" crossorigin="anonymous">
+    {% endblock %}
 {% block title %}Halloween Photobook List{% endblock %}
 
 {% block navbar %}
@@ -10,31 +14,31 @@
 
 {% block content %}
 <!-- The body of the webpage lives here -->
-  <div class="container">
-      <div class="row">
-          <div class="col-12-xs">
-              <!-- Website header | pumpkin emoji &#127875;-->
-              <h3>Halloween Photo Bucket 2021
-                  <span style='font-size:40px;'>
+<div class="container">
+    <div class="row">
+        <div class="col-12-xs">
+            <!-- Website header | pumpkin emoji &#127875;-->
+            <h3>Halloween Photo Bucket 2021
+                <span style='font-size:40px;'>
                     &#127875;
                 </span></h3>
-              <p>Created: {{ my_bucket.creation_date | datetimeformat }}</p>
+            <p>Created: {{ my_bucket.creation_date | datetimeformat }}</p>
 
-              <!--Alert user that their photo has been uploaded.-->
-              {% with messages = get_flashed_messages() %}
+            <!--Alert user that their photo has been uploaded.-->
+            {% with messages = get_flashed_messages() %}
                 {% if messages %}
                 <p class="bg-info" style="padding:15px;">
                 {% for message in messages %}
                     {{ message }}<br>
                 {% endfor %}
                 </p>
-              {% endif %}
+            {% endif %}
             {% endwith %}
 
-              <hr>
-          </div>
-          <!--File upload form-->
-          <form class="upload-form" action="/upload" method="post" enctype="multipart/form-data">
+            <hr>
+        </div>
+        <!--File upload form-->
+        <form class="upload-form" action="/upload" method="post" enctype="multipart/form-data">
             <!--Choose file to upload-->
         <p><input type="file" name="file"></p>
         <button type="submit" name="submit" class="btn btn-primary">Upload</button>
@@ -54,7 +58,15 @@
             <td>{{ f.key }}</td>
             <td>{{ f.last_modified | datetimeformat }}</td>
             <td>{{ f.key | file_type }}</td>
-        </tr>
+            <td>
+            <form class="delete-form" action="{{ url_for('delete') }}" method="post">
+                <input type="hidden" name="key" value="{{ f.key }}">
+                <button type="submit" class="btn btn-danger btn-sm">
+                    <i class="fa fa-trash-alt"></i>
+                </button>
+
+            </form>
+        </td>
         {% endfor %}
     </table>
 </div>
