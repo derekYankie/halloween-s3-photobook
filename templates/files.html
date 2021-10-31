@@ -17,7 +17,7 @@
 <div class="container">
     <div class="row">
         <div class="col-12-xs">
-            <!-- Website header | pumpkin emoji &#127875;-->
+            <!-- First header | pumpkin emoji &#127875;-->
             <h3>Halloween Photo Bucket 2021
                 <span style='font-size:40px;'>
                     &#127875;
@@ -69,6 +69,22 @@
         </td>
         {% endfor %}
     </table>
+    <div class="content">
+        <div>
+        <!-- Second header | candy emoji &#127852;-->
+        <h3>Treats inside your halloween bucket
+        <span style='font-size:40px;'>
+            &#127852;
+        </span>:</h3>
+        <ul>
+            {% for item in contents %}
+            <li>
+                <img src={{ item }} style="width: 150px">
+            </li>
+            {% endfor %}
+        </ul>
+        </div>
+    </div>
 </div>
 </div>
 {% endblock %}

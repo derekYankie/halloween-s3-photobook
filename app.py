@@ -1,6 +1,6 @@
 from flask import Flask, render_template, request, redirect, url_for
 from flask.helpers import flash
-from resources import get_bucket
+from resources import get_bucket, show_image
 from flask_bootstrap import Bootstrap
 from filters import datetimeformat, file_type
 
@@ -8,6 +8,8 @@ from filters import datetimeformat, file_type
 app = Flask(__name__)
 Bootstrap(app)
 app.secret_key= 'this_is_a_secret'
+# *Use Halloween bucket
+BUCKET = "halloween-s3-photobook-2021"
 # * Register jinja filters
 app.jinja_env.filters['datetimeformat'] = datetimeformat
 app.jinja_env.filters['file_type'] = file_type
@@ -18,17 +20,21 @@ def index():
     print("Dude, you're webpage is running!")
     return render_template('index.html')
 
-# * Halloween files page/list
+# * Halloween files list/photos
 @app.route('/files')
 def files():
     halloween_bucket = get_bucket()
-    # * Display all items in s3 Bucket
+    # * List all items in s3 Bucket
     for file in halloween_bucket.objects.all():
         print(f"file name: {file.key}")
     summaries = halloween_bucket.objects.all()
-    print(f"S3 Bucket Object:", halloween_bucket)
+    print(f'S3 Bucket Object:', halloween_bucket)
+    
+    # * Display all items in s3 Bucket
+    contents = show_image(BUCKET)
+    print(f'photo:',contents)
 
-    return render_template('files.html', halloween_bucket=halloween_bucket, files=summaries)
+    return render_template('files.html', halloween_bucket=halloween_bucket, files=summaries, contents=contents)
 
 # * Upload files 
 @app.route('/upload', methods=['POST'])
@@ -38,10 +44,11 @@ def upload():
     halloween_bucket = get_bucket()
     #put uploaded file into bucket
     halloween_bucket.Object(file.filename).put(Body=file)
-    print('Uploaded file:', file.filename)
+    print(f'Uploaded file:', file.filename)
 
     flash('File uploaded successfully')
     return redirect(url_for('files'))
+
 
 # * Delete files 
 @app.route('/delete', methods=['POST'])
